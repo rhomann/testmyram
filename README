@@ -1,0 +1,42 @@
+testmyram -- Simple RAM testing program
+https://github.com/rhomann/testmyram
+
+Copyright (C) 2011  Robert Homann
+                    <homann [at] bury dot com>
+
+The testmyram program is published under the terms of the
+GNU General Public License Version 2.0 (or any later version),
+GNU GPL for short.
+See the file COPYING distributed with this package for the license terms.
+
+                                  ----
+
+This program is a rather simple, yet effective test program for detecting
+stability problems with your system's RAM. It is mainly targeted at small,
+possibly MMU-less, systems which suffer from memory fragmentation and on
+which better alternatives such as "Memtest86+" (http://www.memtest.org/) or
+"stress" (http://weather.ou.edu/~apw/projects/stress/) are not available.
+
+The testmyram program allocates memory in multiple blocks of fixed,
+user-defined size in order to defeat the effect of memory fragmentation. In
+each iteration, these blocks are filled with a sequence of pseudorandom
+bits (unlike other program that fill memory with a single bit pattern,
+typically of 32 bits length). After writing, and possibly after a
+user-defined delay (bit fade test), the same sequence of pseudorandom bits
+is generated again and compared with the content of the memory, possibly
+multiple times.
+
+The test may be started using multiple threads so to add a bit more stress
+to the system.
+
+Example:
+
+$ testmyram -s 524288 -n 20 -j 2 -d 3600 -r 5 -v
+
+This command starts two jobs, both allocating 20 blocks of size 0.5 MiB
+each (for a total size of 20 MiB), fills these blocks with pseudorandom
+bits, and checks their correctness five times in a row, while waiting one
+hour before each read iteration. The program will run infinitely until
+interrupted.
+
+See the output of testmyram -h for complete usage information.
